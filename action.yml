@@ -1,0 +1,21 @@
+name: "sa-key-rotation"
+description: "Copy a file from a git repository to another git repository"
+inputs:
+  owner:
+    description: "github owner name of the destination repo"
+    required: true
+  repo:
+    description: "github repo name of the destination repo"
+    required: true
+  token:
+    description: "github token"
+    required: true
+  service_account_email:
+    description: "service account email to rotate"
+    required: true
+  secret_name:
+    description: "gihub secret key name to store the service account key"
+    required: true
+runs:
+  using: docker
+  image: Dockerfile

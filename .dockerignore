@@ -1,0 +1,10 @@
+README.md
+.git
+.gitignore
+.DS_Store
+.idea
+.vscode
+tmp
+.env
+*.env
+dist
