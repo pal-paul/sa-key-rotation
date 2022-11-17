@@ -27,11 +27,11 @@ func main() {
 	token = os.Getenv("INPUT_TOKEN")
 	projectId = os.Getenv("INPUT_PROJECT_ID")
 
-	sa = os.Getenv("INPUT_SERVICE_ACCOUNT_EMAIL")
+	sa = os.Getenv("INPUT_SERVICE_ACCOUNT_NAME")
 	github_secret_key_name = os.Getenv("INPUT_GITHUB_SECRET_KEY_NAME")
 	gcp_secret_key_name = os.Getenv("INPUT_GCP_SECRET_KEY_NAME")
 
-	client, err := serviceaccount.New(sa)
+	client, err := serviceaccount.New(sa + "@" + projectId + ".iam.gserviceaccount.com")
 	if err != nil {
 		log.Fatal("failed to create client: ", err)
 		return

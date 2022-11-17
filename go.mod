@@ -26,6 +26,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
 	cloud.google.com/go/secretmanager v1.9.0
 	github.com/GoKillers/libsodium-go v0.0.0-20171022220152-dd733721c3cb
+	github.com/gokillers/libsodium-go v0.0.0-20171022220152-dd733721c3cb
 	github.com/golang/protobuf v1.5.2 // indirect
 	google.golang.org/api v0.103.0
 	google.golang.org/appengine v1.6.7 // indirect
