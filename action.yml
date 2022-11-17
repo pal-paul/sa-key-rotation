@@ -10,12 +10,18 @@ inputs:
   token:
     description: "github token"
     required: true
+  project_id:
+    description: "google project id"
+    required: true
   service_account_email:
     description: "service account email to rotate"
     required: true
-  secret_name:
+  github_secret_key_name:
     description: "gihub secret key name to store the service account key"
     required: true
+  google_secret_key_name:
+    description: "google secret key name to store the service account key"
+    required: false
 runs:
   using: docker
   image: Dockerfile
