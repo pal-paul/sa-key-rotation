@@ -13,8 +13,8 @@ inputs:
   project_id:
     description: "google project id"
     required: true
-  service_account_email:
-    description: "service account email to rotate"
+  service_account_name:
+    description: "service account name to rotate"
     required: true
   github_secret_key_name:
     description: "gihub secret key name to store the service account key"

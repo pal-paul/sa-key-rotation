@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"net/url"
 
-	sodium "github.com/GoKillers/libsodium-go/cryptobox"
+	sodium "github.com/gokillers/libsodium-go/cryptobox"
 )
 
 const baseUrl = "https://api.github.com"
