@@ -9,7 +9,9 @@ require (
 
 require (
 	cloud.google.com/go/compute v1.12.1 // indirect
+	cloud.google.com/go/iam v0.6.0 // indirect
 	github.com/golang/groupcache v0.0.0-20200121045136-8c9f03a8e57e // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.0 // indirect
 	github.com/googleapis/gax-go/v2 v2.7.0 // indirect
@@ -22,6 +24,7 @@ require (
 
 require (
 	cloud.google.com/go/compute/metadata v0.2.1 // indirect
+	cloud.google.com/go/secretmanager v1.9.0
 	github.com/GoKillers/libsodium-go v0.0.0-20171022220152-dd733721c3cb
 	github.com/golang/protobuf v1.5.2 // indirect
 	google.golang.org/api v0.103.0
