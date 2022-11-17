@@ -7,7 +7,8 @@ WORKDIR /sa-key-rotation
 RUN apt-get update && apt-get -y install libsodium-dev
 
 ENV GO111MODULE=on
-ENV PKG_CONFIG_PATH=/usr/local/bin
+ENV LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+ENV PKG_CONFIG_PATH="/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH"
 RUN make install
 RUN make build
 
