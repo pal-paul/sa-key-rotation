@@ -1,6 +1,6 @@
 FROM golang:1.18 as build
 
-RUN apt-get install -y libsodium-dev pkg-config
+RUN apt-get install -y libsodium13 pkg-config
 RUN mkdir -p /sa-key-rotation/
 COPY . /sa-key-rotation/
 WORKDIR /sa-key-rotation
