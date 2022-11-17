@@ -11,11 +11,10 @@ import (
 	"net/http"
 	"net/url"
 
-	sodium "github.com/gokillers/libsodium-go/cryptobox"
+	"golang.org/x/crypto/nacl/box"
 )
 
 const baseUrl = "https://api.github.com"
-const basePath = "api"
 
 type github struct {
 	token string
@@ -91,13 +90,8 @@ func (g *github) getPublicKey() error {
 }
 
 func (g *github) getEncryptSecretData(secretValue string) (*encryptedSecret, error) {
-	decodedPublicKey, err := base64.StdEncoding.DecodeString(g.key.Key)
+	encryptedBytes, err := encryptPlaintext(secretValue, g.key.Key)
 	if err != nil {
-		return nil, fmt.Errorf("base64.StdEncoding.DecodeString was unable to decode public key: %v", err)
-	}
-	secretBytes := []byte(secretValue)
-	encryptedBytes, exit := sodium.CryptoBoxSeal(secretBytes, decodedPublicKey)
-	if exit != 0 {
 		return nil, errors.New("sodium.CryptoBoxSeal exited with non zero exit code")
 	}
 	encryptedString := base64.StdEncoding.EncodeToString(encryptedBytes)
@@ -108,10 +102,36 @@ func (g *github) getEncryptSecretData(secretValue string) (*encryptedSecret, err
 	return encryptedSecret, nil
 }
 
+func encryptPlaintext(plaintext, publicKeyB64 string) ([]byte, error) {
+	publicKeyBytes, err := base64.StdEncoding.DecodeString(publicKeyB64)
+	if err != nil {
+		return nil, err
+	}
+
+	var publicKeyBytes32 [32]byte
+	copiedLen := copy(publicKeyBytes32[:], publicKeyBytes)
+	if copiedLen == 0 {
+		return nil, fmt.Errorf("could not convert publicKey to bytes")
+	}
+
+	plaintextBytes := []byte(plaintext)
+	var encryptedBytes []byte
+
+	cipherText, err := box.SealAnonymous(encryptedBytes, plaintextBytes, &publicKeyBytes32, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return cipherText, nil
+}
+
 func (g *github) get(path string, qs url.Values) ([]byte, error) {
 	gUrl := baseUrl + "/repos/" + g.owner + "/" + g.repo + "/" + path
 
 	u, err := url.Parse(gUrl)
+	if err != nil {
+		return nil, err
+	}
 	if qs != nil {
 		u.RawQuery = qs.Encode()
 	}
@@ -149,8 +169,10 @@ func (g *github) get(path string, qs url.Values) ([]byte, error) {
 
 func (g *github) post(path string, reqBody []byte, qs url.Values) ([]byte, error) {
 	gUrl := baseUrl + "/repos/" + g.owner + "/" + g.repo + "/" + path
-
 	u, err := url.Parse(gUrl)
+	if err != nil {
+		return nil, err
+	}
 	if qs != nil {
 		u.RawQuery = qs.Encode()
 	}
@@ -190,6 +212,9 @@ func (g *github) put(path string, reqBody []byte, qs url.Values) ([]byte, error)
 	gUrl := baseUrl + "/repos/" + g.owner + "/" + g.repo + "/" + path
 
 	u, err := url.Parse(gUrl)
+	if err != nil {
+		return nil, err
+	}
 	if qs != nil {
 		u.RawQuery = qs.Encode()
 	}
