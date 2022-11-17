@@ -1,10 +1,10 @@
 FROM golang:1.18 as build
 
-RUN apt-get update && apt-get -y install libsodium-dev
-
 RUN mkdir -p /sa-key-rotation/
 COPY . /sa-key-rotation/
 WORKDIR /sa-key-rotation
+
+RUN apt-get update && apt-get -y install libsodium-dev
 
 ENV GO111MODULE=on
 RUN make install
