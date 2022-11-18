@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 
@@ -59,7 +60,7 @@ func main() {
 			log.Fatal("failed to rotate service account key: ", err)
 			return
 		}
-		err = client.DeleteKey(key.Name)
+		err = client.DeleteKey(key.FullName)
 		if err != nil {
 			log.Fatal("failed to delete key: ", err)
 			return
@@ -72,6 +73,7 @@ func CreateRotate(client serviceaccount.ServiceAccountInterface) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("New key created")
 	gitClient, err := github.New(owner, repo, token)
 	if err != nil {
 		return err
@@ -84,6 +86,7 @@ func CreateRotate(client serviceaccount.ServiceAccountInterface) error {
 	if err != nil {
 		return err
 	}
+	fmt.Println("New key added to github repo")
 	if gcp_secret_key_name != "" {
 		secretManager, err := secret.New(projectId)
 		if err != nil {
@@ -91,8 +94,10 @@ func CreateRotate(client serviceaccount.ServiceAccountInterface) error {
 		}
 		if !secretManager.Exists(gcp_secret_key_name) {
 			secretManager.Create(gcp_secret_key_name)
+			fmt.Println("New secret created in gcp secret manager")
 		}
 		secretManager.AddSecretVersion(gcp_secret_key_name, secretData)
+		fmt.Println("New key added to gcp secret manager")
 	}
 	return nil
 }
