@@ -19,7 +19,7 @@ inputs:
   github_secret_key_name:
     description: "gihub secret key name to store the service account key"
     required: true
-  google_secret_key_name:
+  gcp_secret_key_name:
     description: "google secret key name to store the service account key"
     required: false
 runs:
